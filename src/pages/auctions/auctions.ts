@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { Http } from "@angular/http";
 import { IonicPage, NavController, NavParams } from "ionic-angular";
 import "rxjs/add/operator/map";
 declare var io: any;
@@ -9,24 +10,24 @@ declare var io: any;
   templateUrl: "auctions.html"
 })
 export class AuctionsPage {
-  ships;
+  ships = [];
   loading = true;
   offset = 0;
   show = false;
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    public http: Http
   ) {
     console.log("auction con");
-    this.request(true);
+    this.request(true)
   }
 
   ionViewDidLoad() {
     console.log("ionViewDidLoad AuctionsPage");
   }
 
-  request(initial?) {
-    console.log("io auctions//");
+  request(initial?, event?) {
     // io.socket.get("/api/auction", event => {
     //   console.log(event)
     //   let result = []
@@ -37,54 +38,44 @@ export class AuctionsPage {
     //   this.ships = result
     //   this.loading = false
     // })
-
-    io.socket.get(
-      "/api/v1/shipsRandom?offset=" + (3759 + this.offset * 12),
-      data => {
-        this.loading = false;
-
-        if (data) {
-          console.log(data);
-          if (data.length > 0) {
-            // data.forEach(ship => {
-            //   ship["img"] = "randomColo" + Math.floor(Math.random() * 4.99) + ".png"
-            // })
-
-            data.sort((a, b) => {
-              return a.id - b.id;
-            });
-            this.ships = data;
-            if (initial) {
-              setTimeout(() => {
-                this.show = true;
-              }, 150);
+    const request = this.http.get("/api/v1/shipsRandom?offset=" + (3759 + this.offset * 12)).map(res => res.json())
+    request.subscribe(data => {
+          this.loading = false;
+    
+          if (data) {
+            if (data.length > 0) {
+              data.sort((a, b) => {
+                return a.id - b.id;
+              });
+              console.log(data, this.ships)
+              this.ships = [...this.ships, ...data];
+              if (initial) {
+                setTimeout(() => {
+                  this.show = true;
+                }, 150);
+              }
+              this.loading = false;
             }
-            this.loading = false;
+          } else {
+            console.log("unable to load ships");
           }
-        } else {
-          console.log("unable to load ships");
-        }
-      }
-    );
+          if (event) {
+            event.complete();
+          }
+        })
   }
 
-  changeTab(ment) {
-    this.offset += ment;
+  changeTab(e) {
+    this.offset ++;
     this.loading = true;
-    // this.ships = null;
-    this.request();
+    this.request(false, e)
   }
 
   parseResult(data) {
-    console.log("got result", data);
     this.loading = false;
     console.log(data);
     if (data.length > 0) {
-      // data.forEach(ship => {
-      //   ship["img"] = "randomColo" + Math.floor(Math.random() * 4.99) + ".png"
-      // })
       this.ships = data;
     }
-    console.log("done");
   }
 }

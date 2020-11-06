@@ -59,6 +59,37 @@ ship-card {
   //   --secondary-color: #ffdf34;
   //   --tertiary-color: #333;
   // }
+
+  .ship-num {
+    color: var(--accent);
+  }
+  .rare {
+    border-radius: 50px;
+    border:  grey solid 1px;
+    background-color: rgb(250, 214, 11) !important;
+    padding-left: 8px;
+    padding-right: 8px;
+    margin-left : 5px;
+    display: flex;
+    align-items: center;
+    color: rgba(51,54,108, 0.9);
+    font-weight: 700;
+    font-size: 1rem;
+    justify-content: center;
+    text-align: center;
+    border-color: grey;
+    padding-top: 2px;
+    border-width: 1px;
+  }
+  .info {
+    display: flex;
+    align-items: center;;
+  }
+
+  .bottom {
+    position: absolute;
+    bottom: 0;
+  }
 }
 
 ship-card,

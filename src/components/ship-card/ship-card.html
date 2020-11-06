@@ -11,19 +11,16 @@
           </div>
         </ion-col>
       </ion-row>
-
-      <ion-card-title class="ellip" *ngIf="!demo">
-        {{ ship.name ? ship.name : "Ship " + ship.id }}
-      </ion-card-title>
-      <ion-row no-padding *ngIf="!demo">
-        <ion-col>
-          <button ion-button clear small color="danger" icon-start title="ship.model">
-            <!-- <ion-icon name='star'></ion-icon> -->
-            Ship #{{ ship.id }}
-          </button>
-          <span *ngIf="ship.price">{{ ship.price / 1000000000000000000 }} Eth</span>
-        </ion-col>
-      </ion-row>
+      <div class="bottom">
+        <ion-card-title class="ellip" *ngIf="!demo">
+          {{ ship.name ? ship.name : "Ship " + ship.id }}
+        </ion-card-title>
+        <ion-row class="info" no-padding *ngIf="!demo">
+          <span class="ship-num">Ship #{{ ship.id }}</span>
+          <span class="rare" *ngIf="ship.id % 41 == 0 || ship.id % 151 == 1">RARE</span>
+          <span *ngIf="ship.price" class="danger">{{ ship.price / 1000000000000000000 }} Eth</span>
+        </ion-row>
+      </div>
     </ion-card-content>
   </a>
 </ion-card>

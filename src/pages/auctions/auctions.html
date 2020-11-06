@@ -5,17 +5,19 @@
 
 <ion-content no-padding>
   <ion-grid class="contentRoom">
-    <ion-row class="pagination">
+    <!-- <ion-row class="pagination">
       <ion-icon name="ios-arrow-back" [style.opacity]="offset == 0 ? 0 : 1" (tap)="changeTab(-1)" tappable></ion-icon>
       <span *ngIf="!loading">{{ offset + 1 }}</span>
       <ion-spinner *ngIf="loading"> </ion-spinner>
       <ion-icon name="ios-arrow-forward" (tap)="changeTab(1)" tappable></ion-icon>
-    </ion-row>
+    </ion-row> -->
 
     <ion-row class="ships-row">
       <ship-card *ngFor="let ship of ships" ion-col col-12 col-xxl-3 col-xl-4 col-lg-6 col-md-6 [hidden]="!show" [ship]="ship"></ship-card>
     </ion-row>
   </ion-grid>
-
+  <ion-infinite-scroll (ionInfinite)="changeTab($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
   <footer-component></footer-component>
 </ion-content>

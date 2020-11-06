@@ -9,6 +9,7 @@ import { AppState } from "../../app/app.service"
 })
 export class HeaderComponent {
   pages = [
+    { title: "About", component: HomePage, href: "" },
     { title: "Auctions", component: "AuctionsPage", href: "auctions" },
     { title: "Battle", component: "GamePage", href: "game" },
     { title: "My Ships", component: "MyShipsPage", href: "my-ships" }
@@ -38,6 +39,10 @@ export class HeaderComponent {
     })
   }
   openPage(e, page) {
+    if (page.href === "") {
+      this.goHome(e);
+      return;
+    }
     e.preventDefault()
     // this.nav.setRoot(page.component)
     this.zone.run(() => {
